@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Document</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 400px;
+      margin: 0;
+      height: auto;
+    }
+
+    .popup-wrap {
+      box-sizing: border-box;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item {
+      width: 100%;
+    }
+
+    .item input {
+      width: 100%;
+    }
+
+    .button {
+      width: 50px;
+      margin: 20px 0;
+    }
+
+    .pt24 {
+      padding-top: 24px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="popup-wrap">
+    <h3>cookie sync(同步一个域名下的cookie到另一个域名下)</h3>
+    <div class="item">
+      <input placeholder="目标域名" class="origin" disabled />
+    </div>
+    <button class="button">to</button>
+    <div class="item">
+      <input placeholder="你要同步到哪" class="target" />
+    </div>
+    <div class="pt24">🌰1: 输入localhost:8082 会得到 http://localhost:8082</div>
+    <div>🌰2: 输入abc.cn 会得到 https://abc.cn</div>
+  </div>
+</body>
+<script src="popup.js"></script>
+
+</html>
