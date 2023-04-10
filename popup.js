@@ -15,6 +15,20 @@ const getActiveTabUrl = () => {
   });
 };
 
+const getCookies = (url) => {
+  return new Promise((resolve, reject) => {
+    chrome.cookies.getAll({ url }, (cookies) => {
+      if (cookies && Array.isArray(cookies)) {
+        resolve(cookies);
+      } else {
+        reject(new Error("error"));
+      }
+    });
+  });
+};
+
+const cb = () => {};
+
 const hasHttpPrefix = (url) => {
   return url.startsWith("http://") || url.startsWith("https://");
 };
@@ -40,31 +54,26 @@ const main = async () => {
 
 main();
 
-button.addEventListener("click", () => {
-  const [originValue, targetValue] = [originUrl.value, targetUrl.value];
-  if (!originValue || !targetValue) {
-    return alert("no write!");
-  }
-  chrome.cookies.getAll(
-    {
-      url: originValue,
-    },
-    (cookies) => {
-      console.log(cookies);
-      cookies.forEach(({ name, value, expirationDate }) => {
-        chrome.cookies.set(
-          {
-            url: addPrefix(targetValue),
-            name,
-            value,
-            expirationDate,
-          },
-          function (cookie) {
-            console.log("New cookie created:", cookie);
-          }
-        );
-      });
-      alert("Yep!");
+button.addEventListener("click", async () => {
+  try {
+    const [originValue, targetValue] = [originUrl.value, targetUrl.value];
+    if (!originValue || !targetValue) {
+      return alert("no write!");
     }
-  );
+    const cookies = await getCookies(originValue);
+    cookies.forEach(({ name, value, expirationDate }) => {
+      chrome.cookies.set(
+        {
+          url: addPrefix(targetValue),
+          name,
+          value,
+          expirationDate,
+        },
+        cb
+      );
+    });
+    alert("Yep!");
+  } catch (e) {
+    alert(e.message);
+  }
 });
