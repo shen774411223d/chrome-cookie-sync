@@ -53,8 +53,7 @@ const main = async () => {
 };
 
 main();
-
-button.addEventListener("click", async () => {
+const setCookie = async () => {
   try {
     const [originValue, targetValue] = [originUrl.value, targetUrl.value];
     if (!originValue || !targetValue) {
@@ -76,4 +75,16 @@ button.addEventListener("click", async () => {
   } catch (e) {
     alert(e.message);
   }
-});
+}
+// 插件打开时，自动获取输入框焦点
+window.onload = () => {
+  targetUrl.focus()
+  targetUrl.addEventListener("keydown", async (event) => {
+    if (event.keyCode === 13) {
+      // 在这里执行回车键被按下时的操作
+      event.preventDefault(); 
+      setCookie()
+    }
+  });
+}
+button.addEventListener("click", setCookie);
